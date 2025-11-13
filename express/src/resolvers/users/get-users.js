@@ -1,0 +1,6 @@
+import { userModel } from "../../model/user-model.js";
+
+export const getUsers = async (req, res) => {
+  const dbuser = await userModel.find();
+  res.status(200).json(dbuser);
+};
