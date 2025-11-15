@@ -51,6 +51,8 @@ import {
 } from "@/components/ui/pagination";
 import { use, useState } from "react";
 import { FoodIcon } from "./admin/icons/foodicon";
+import { TimeIcon } from "./admin/icons/timeicon";
+import { MapIcon } from "./admin/icons/mapicon";
 
 export default function Home() {
   const [step, setstep] = useState(1);
@@ -227,7 +229,7 @@ export default function Home() {
                             My Order
                           </div>
                           <div className="w-full h-[90%] overflow-scroll ">
-                            <div className="w-120  border-dashed border-b border-[#09090B80] h-45 flex flex-col gap-5 mb-5 ">
+                            <div className="w-120 h-55 border-dashed border-b border-[#09090B80] flex flex-col gap-5  ">
                               <div className=" flex justify-between">
                                 <div className=" w-full flex justify-around">
                                   <p className=" h-8 w-240 font-bold text-base text-black">
@@ -248,17 +250,25 @@ export default function Home() {
                                   <p className="text-sm">Sunshine Stackers </p>
                                 </div>
                                 <div className="w-140 flex justify-end">
-                                  <p className="text-sm">X1</p>
+                                  <p className="text-sm">x1</p>
                                 </div>
                               </div>
-                              <div className="w-full flex justify-around">
+                              <div className="w-full flex justify-around items-center">
                                 <div className="flex w-140 gap-3">
                                   <FoodIcon />
                                   <p className="text-sm">Sunshine Stackers </p>
                                 </div>
                                 <div className="w-140 flex justify-end">
-                                  <p className="text-sm">X1</p>
+                                  <p className="text-sm">x1</p>
                                 </div>
+                              </div>
+                              <div className="gap-3 flex text-sm items-center">
+                                <TimeIcon />
+                                <p>2024/12/20</p>
+                              </div>
+                              <div className="flex gap-3 text-sm items-center">
+                                <MapIcon />
+                                <p>Mongolia, Ub exx</p>
                               </div>
                             </div>
                           </div>

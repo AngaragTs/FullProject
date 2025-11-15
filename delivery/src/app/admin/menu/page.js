@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import Link from "next/link";
 import { Head } from "./component/product";
+import { FoodCard } from "./feature/foodcard";
 const options = {
   method: "GET",
   headers: {
@@ -23,6 +24,9 @@ const options = {
 };
 export default function Home() {
   const [foodCategoryData, setFoodCategoryData] = useState([]);
+
+  const [categoryname, setCategoryName] = useState("");
+  const [addcategory, setAddCategory] = useState(false);
   const getData = async () => {
     const data = await fetch(`http://localhost:8000/category`, options);
     const jsonData = await data.json();
@@ -33,6 +37,27 @@ export default function Home() {
     getData();
   }, []);
 
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/category", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          categoryName: categoryname,
+        }),
+      });
+      setAddCategory(false);
+      getData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const Handlecancel = () => {
+    return setCategoryName("");
+  };
   return (
     <div className="w-full  flex m-auto">
       <div className="w-80 bg-white gap-10 mt-10 flex justify-center">
@@ -66,7 +91,7 @@ export default function Home() {
         <div className="flex justify-center mt-5">
           <div className="w-460 mah-h-fit mb-3">
             <div className="w-full flex justify-end">
-              <img className="w-9 h-9" src="icon.png"></img>
+              <img className="w-9 h-9" src="../icon.png"></img>
             </div>
             <div className="w-full flex justify-center mt-2">
               <div className="w-460 max-h-fit bg-white rounded-2xl p-2">
@@ -85,30 +110,11 @@ export default function Home() {
                       </button>
                     );
                   })}
-
-                  <button className="cursor-pointer rounded-2xl w-auto p-2 border bg-[#EF4444]">
-                    <Dialog>
-                      <DialogTrigger asChild>+</DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Add new category</DialogTitle>
-                          <DialogDescription>
-                            <div>
-                              <p className="text-[#09090B]">Category Name</p>
-                              <input
-                                placeholder="Type category name..."
-                                className="h-9 w-100 gap-2 border pl-1 text-black"
-                              ></input>
-                            </div>
-                            <div className="bg-black text-white mt-5 h-10 w-30 flex justify-center">
-                              <button className="cursor-pointer">
-                                Add Category
-                              </button>
-                            </div>
-                          </DialogDescription>
-                        </DialogHeader>
-                      </DialogContent>
-                    </Dialog>
+                  <button
+                    className="bg-[#EF4444] cursor-pointer rounded-2xl w-auto p-2 border text-white"
+                    onClick={() => setAddCategory(true)}
+                  >
+                    +
                   </button>
                 </div>
               </div>
@@ -122,13 +128,56 @@ export default function Home() {
                 <Head
                   categoryName={category.categoryName}
                   key={category._id}
-                  category={category}
+                  id={category._id}
                 />
               );
             })}
           </div>
         </div>
       </div>
+      {addcategory && (
+        <div className="fixed w-screen h-screen bg-black/60 flex justify-center items-center ">
+          <div className="bg-white w-115 h-68 flex justify-around flex-col items-center rounded-2xl">
+            <div className="w-103 h-13 flex justify-between">
+              <p className="text-[#09090B] font-semibold text-lg mt-2">
+                Add new category
+              </p>
+              <button
+                onClick={() => setAddCategory(false)}
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-[#F4F4F5] cursor-pointer"
+              >
+                <p>x</p>
+              </button>
+            </div>
+
+            <div className="w-103 h-13">
+              <p className="text-sm font-medium">Category Name</p>
+              <input
+                placeholder="Type category name..."
+                className="h-10 w-100 gap-2 border pl-1 text-black"
+                value={categoryname}
+                onChange={(e) => setCategoryName(e.target.value)}
+              ></input>
+            </div>
+            <div className=" text-white h-13 w-103 flex items-end justify-end gap-2">
+              {categoryname.length > 3 && (
+                <button
+                  onClick={Handlecancel}
+                  className="w-20 h-10 border border-[#E4E4E7] cursor-pointer bg-white text-black rounded-2xl"
+                >
+                  Cancel
+                </button>
+              )}
+              <button
+                className="w-30 h-10 cursor-pointer bg-black rounded-2xl"
+                onClick={handleSubmit}
+              >
+                Add Category
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
