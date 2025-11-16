@@ -23,10 +23,13 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
   },
 };
-export const Head = ({ categoryName, id }) => {
+export const Head = ({ categoryName, id, foodCategoryData }) => {
   const [food, setfood] = useState([]);
   const [addfood, setAddFood] = useState(false);
   const [foodname, setFoodName] = useState("");
+  const [foodprice, setFoodPrice] = useState("");
+  const [foodingredients, setFoodIngredients] = useState("");
+  const [foodimage, setFoodImage] = useState("");
 
   const getFoodData = async () => {
     const data = await fetch(`http://localhost:8000/food/${id}`, options);
@@ -89,7 +92,7 @@ export const Head = ({ categoryName, id }) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch("http://localhost:8000/foods", {
+      const res = await fetch("http://localhost:8000/food", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,11 +101,12 @@ export const Head = ({ categoryName, id }) => {
         body: JSON.stringify({
           foodname: foodname,
           price: foodprice,
-          image: foodimage,
           ingredients: foodingredients,
+          category: id,
         }),
       });
       setAddFood(false);
+      getFoodData();
       getData();
     } catch (err) {
       console.log(err);
@@ -132,6 +136,7 @@ export const Head = ({ categoryName, id }) => {
             return (
               <FoodInfo
                 key={food._id}
+                foodCategoryData={foodCategoryData}
                 ingredients={food.ingredients}
                 foodname={food.foodname}
                 price={food.price}
@@ -160,16 +165,17 @@ export const Head = ({ categoryName, id }) => {
               <div>
                 <p className="text-sm text-black font-medium">Food name</p>
                 <input
+                  onChange={(e) => setFoodName(e.target.value)}
                   value={foodname}
-                  onChange={(e) => setAddFood(e.target.value)}
                   placeholder="Food name"
-                  className="w-50 h-10 border border-[#E4E4E7] rounded-xl text-black px-2
-                                  "
+                  className="w-50 h-10 border border-[#E4E4E7] rounded-xl text-black px-2"
                 ></input>
               </div>
               <div>
                 <p className="text-sm text-black font-medium">Food Price</p>
                 <input
+                  onChange={(e) => setFoodPrice(e.target.value)}
+                  value={foodprice}
                   placeholder="Food name"
                   className="w-50 h-10 border border-[#E4E4E7] rounded-xl text-black px-2"
                 ></input>
@@ -177,7 +183,11 @@ export const Head = ({ categoryName, id }) => {
             </div>
             <div className="w-120">
               <p className="text-sm text-black font-medium">Ingredients</p>
-              <Textarea className="w-120" />
+              <Textarea
+                onChange={(e) => setFoodIngredients(e.target.value)}
+                value={foodingredients}
+                className="w-120"
+              />
             </div>
             <div className="w-120 mt-5">
               <p className="text-sm text-black font-medium">Food image</p>
@@ -187,7 +197,7 @@ export const Head = ({ categoryName, id }) => {
                     Uploading...
                   </p>
                 )}
-                ;
+
                 {!logoUrl ? (
                   <div>
                     <Label htmlFor="input-tag" className="flex-col flex ">

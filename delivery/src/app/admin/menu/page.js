@@ -50,6 +50,7 @@ export default function Home() {
         }),
       });
       setAddCategory(false);
+      setCategoryName("");
       getData();
     } catch (err) {
       console.log(err);
@@ -127,6 +128,7 @@ export default function Home() {
               return (
                 <Head
                   categoryName={category.categoryName}
+                  foodCategoryData={foodCategoryData}
                   key={category._id}
                   id={category._id}
                 />
