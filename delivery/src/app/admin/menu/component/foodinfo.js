@@ -1,5 +1,15 @@
 import { useState } from "react";
 import { PenIcon } from "../../icons/penicon";
+import { DeleteIcon } from "../../icons/deleteicon";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const FoodInfo = ({
   ingredients,
@@ -10,14 +20,35 @@ export const FoodInfo = ({
 }) => {
   const [dishinfo, setDishInfo] = useState(false);
   console.log("foodCategoryDataahaaahhahahh", foodCategoryData);
+  const [deletefood, setDeleteFood] = useState("");
+
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/food", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          foodname: foodname,
+          price: foodprice,
+          ingredients: foodingredients,
+          category: id,
+        }),
+      });
+      setAddFood(false);
+      getFoodData();
+      getData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="w-70 h-60 border rounded-2xl flex flex-col items-center justify-around border-[#E4E4E7]">
       <div className="w-60 h-30 border border-[#E4E4E7] rounded-2xl relative">
-        <img
-          className="w-full h-full object-cover rounded-2xl"
-          src="../head.png"
-        />
+        <img className="w-full h-full object-cover rounded-2xl" src={image} />
 
         <button
           onClick={() => setDishInfo(true)}
@@ -58,39 +89,66 @@ export const FoodInfo = ({
                   <p className="text-xs text-[#71717A]">Dish name</p>
                 </div>
 
-                <input className="w-72 h-9 border border-[#E4E4E7] px-1 rounded-2xl"></input>
+                <input
+                  className="w-72 h-9 border border-[#E4E4E7] px-1 rounded-2xl"
+                  defaultValue={foodname}
+                ></input>
               </div>
               <div className="w-120 h-15 flex justify-between">
                 <div className="w-30">
                   <p className="text-xs text-[#71717A]">Dish category</p>
                 </div>
-
-                <input className="w-72 h-9 border border-[#E4E4E7] px-1 rounded-2xl"></input>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a fruit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Fruits</SelectLabel>
+                      <SelectItem value="apple">Apple</SelectItem>
+                      <SelectItem value="banana">Banana</SelectItem>
+                      <SelectItem value="blueberry">Blueberry</SelectItem>
+                      <SelectItem value="grapes">Grapes</SelectItem>
+                      <SelectItem value="pineapple">Pineapple</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="w-120 h-50 flex justify-between">
                 <div className="w-30">
                   <p className="text-xs text-[#71717A]">Ingredients</p>
                 </div>
 
-                <textarea className="w-72 h-30 border border-[#E4E4E7] px-1 rounded-2xl py-1" />
+                <textarea
+                  className="w-72 h-30 border border-[#E4E4E7] px-1 rounded-2xl py-1"
+                  defaultValue={ingredients}
+                />
               </div>
               <div className="w-120 h-15 flex justify-between">
                 <div className="w-30">
                   <p className="text-xs text-[#71717A]">Price</p>
                 </div>
 
-                <input className="w-72 h-9 border border-[#E4E4E7] px-1 rounded-2xl"></input>
+                <input
+                  className="w-72 h-9 border border-[#E4E4E7] px-1 rounded-2xl"
+                  defaultValue={price}
+                ></input>
               </div>
               <div className="w-120 h-50 flex justify-between">
                 <div className="w-30">
                   <p className="text-xs text-[#71717A]">Image</p>
                 </div>
 
-                <textarea className="w-72 h-30 border border-[#E4E4E7] px-1 rounded-2xl py-1" />
+                <img
+                  className="w-72 h-30 border border-[#E4E4E7] px-1 rounded-2xl py-1"
+                  src={image}
+                />
               </div>
             </div>
-            <div className="w-120 h-30 flex items-end justify-end ">
-              <button></button>
+            <div className="w-120 h-30 flex items-end justify-between ">
+              <button className="w-12 h-10 bg-white border border-[#EF444480] flex items-center justify-center rounded-xl cursor-pointer">
+                <DeleteIcon />
+              </button>
               <button className="bg-black w-30 h-10 rounded-xl cursor-pointer">
                 <p className="text-white">Save Changes</p>
               </button>

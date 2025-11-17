@@ -210,13 +210,29 @@ export default function Home() {
                         </div>
                       </div>
 
-                      <div className="bg-white w-135 h-60 rounded-2xl mt-10 flex justify-center">
+                      <div className="bg-white w-135 h-70 rounded-2xl mt-10 flex justify-center">
                         <div className="w-115">
-                          <p className="text-[#71717A] h-10 text-xl">
+                          <p className="text-black font-semibold h-10 text-xl">
                             Payment info
                           </p>
-                          <div className="w-full border border-dashed border-[#09090B80]"></div>
-                          <button className="w-full h-10 bg-[#EF4444] cursor-pointer flex items-center justify-center rounded-2xl">
+                          <div className="w-full h-auto">
+                            <div className="w-full h-7 flex justify-between">
+                              <p className="text-base text-[#71717A]">Items </p>
+                              <p className="font-bold text-black">$25.98</p>
+                            </div>
+                            <div className="w-full h-7 flex justify-between">
+                              <p className="text-base text-[#71717A]">
+                                Shipping
+                              </p>
+                              <p className="font-bold text-black">0.99$</p>
+                            </div>
+                          </div>
+                          <div className="w-full  border border-dashed border-[#09090B80]"></div>
+                          <div className="w-full h-7 flex justify-between">
+                            <p className="text-base text-[#71717A]">Total</p>
+                            <p className="font-bold text-black">$26.97</p>
+                          </div>
+                          <button className="w-full h-10 bg-[#EF4444] cursor-pointer flex items-center justify-center rounded-2xl mt-5">
                             <p className="text-white font-medium">Checkout</p>
                           </button>
                         </div>
@@ -275,7 +291,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                      <div className="bg-white w-135 h-60 rounded-2xl mt-10 flex justify-center">
+                      <div className="bg-white w-135 h-70 rounded-2xl mt-10 flex justify-center">
                         <div className="w-115">
                           <p className="text-[#71717A] h-10 text-xl">
                             Payment info

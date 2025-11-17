@@ -46,6 +46,10 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
 
   const [uploading, setUploading] = useState(false);
 
+  const UPLOAD_PRESET = "FoodDelivery";
+
+  const CLOUD_NAME = "dmzewvhlz";
+
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
 
@@ -65,6 +69,7 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
       );
 
       const data = await response.json();
+      console.log("adsasdadddasd", data);
 
       return data.secure_url;
     } catch (error) {
@@ -103,6 +108,7 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
           price: foodprice,
           ingredients: foodingredients,
           category: id,
+          image: logoUrl,
         }),
       });
       setAddFood(false);
@@ -113,10 +119,10 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
     }
   };
   return (
-    <div className="w-460 h-80 bg-white rounded-2xl flex flex-col mt-5">
+    <div className="w-460 h-auto bg-white rounded-2xl flex flex-col mt-5">
       <p className="font-semibold mt-2 ml-2">{categoryName}</p>
       <div className="flex ">
-        <div className="w-full  rounded-2xl ml-2 flex-wrap flex p-2 gap-2 ">
+        <div className="w-full   rounded-2xl ml-2 flex-wrap flex p-2 gap-2 ">
           <div className="w-70 h-60 border rounded-2xl flex items-center justify-around border-dashed border-red-700">
             <div>
               <div className="flex justify-center  items-center">
@@ -140,14 +146,14 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
                 ingredients={food.ingredients}
                 foodname={food.foodname}
                 price={food.price}
-                image={food.image}
+                image={food.image || "../head.png"}
               />
             );
           })}
         </div>
       </div>
       {addfood && (
-        <div className="fixed  inset-0 w-screen h-screen bg-black/60 flex justify-center items-center ">
+        <div className="fixed  inset-0 w-screen h-screen bg-black/60 flex justify-center items-center z-50">
           <div className="w-130 h-170 bg-white flex flex-col rounded-2xl items-center justify-around">
             <div className="w-120 h-13 flex justify-between">
               <p className="text-[#09090B] font-semibold text-lg mt-2">
@@ -200,15 +206,17 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
 
                 {!logoUrl ? (
                   <div>
-                    <Label htmlFor="input-tag" className="flex-col flex ">
-                      <div className="w-8 h-8 rounded-2xl bg-white flex justify-center items-center">
-                        <ImageIcon />
-                      </div>
+                    {!uploading && (
+                      <Label htmlFor="input-tag" className="flex-col flex ">
+                        <div className="w-8 h-8 rounded-2xl bg-white flex justify-center items-center">
+                          <ImageIcon />
+                        </div>
 
-                      <p className="text-sm text-black font-medium">
-                        Choose a file or drag & drop it here
-                      </p>
-                    </Label>
+                        <p className="text-sm text-black font-medium">
+                          Choose a file or drag & drop it here
+                        </p>
+                      </Label>
+                    )}
                     <input
                       type="file"
                       accept="image/*"
@@ -219,12 +227,14 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
                     />
                   </div>
                 ) : (
-                  <Image
-                    src={logoUrl}
-                    alt="Uploaded logo"
-                    fill
-                    className="object-contain rounded border border-gray-300"
-                  />
+                  <div className="w-full h-30 relative object-cover">
+                    <Image
+                      src={logoUrl}
+                      alt="Uploaded logo"
+                      fill
+                      className="object-contain rounded border border-gray-300 "
+                    />
+                  </div>
                 )}
               </div>
 
