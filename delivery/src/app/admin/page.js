@@ -122,48 +122,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
-            {/* <div className="w-460 h-10 bg-[#E4E4E7] flex items-center">
-              <div className="w-24 h-12 flex items-center  justify-evenly">
-                <input type="checkbox" />
-                <p>1</p>
-              </div>
-              <div className="w-460 h-12 flex items-center justify-evenly text-[#71717A]">
-                <p>Customer</p>
-                <p>Food</p>
-
-                <Popover>
-                  <PopoverTrigger>
-                    <DownIcon />
-                  </PopoverTrigger>
-                  <PopoverContent className="w-40 h-20">
-                    <div>
-                      <p>asdsadaa</p>
-                      <p>fadfasfsdf</p>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-
-                <div className="flex h-12 items-center gap-5">
-                  <p>Date</p>
-                  <UpDownIcon />
-                </div>
-                <p>$12 </p>
-                <p>Delivery Address</p>
-              </div>
-              <div className="border border-red-500 rounded-2xl">
-                <Select>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Theme" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="light">Delivered</SelectItem>
-                    <SelectItem value="dark">Pending</SelectItem>
-                    <SelectItem value="system">Cancelled</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div> */}
           </div>
         </div>
         <div className="w-460">

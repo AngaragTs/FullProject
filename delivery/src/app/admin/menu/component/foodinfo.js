@@ -17,29 +17,50 @@ export const FoodInfo = ({
   price,
   image,
   foodCategoryData,
+  categoryName,
+  id,
+  getFoodData,
 }) => {
   const [dishinfo, setDishInfo] = useState(false);
-  console.log("foodCategoryDataahaaahhahahh", foodCategoryData);
-  const [deletefood, setDeleteFood] = useState("");
-
+  const [changedetail, setChangedetail] = useState({
+    foodname: foodname,
+    ingredients: ingredients,
+  });
   const handleSubmit = async () => {
     try {
       const res = await fetch("http://localhost:8000/food", {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
         },
         body: JSON.stringify({
-          foodname: foodname,
-          price: foodprice,
-          ingredients: foodingredients,
-          category: id,
+          id: id,
         }),
       });
-      setAddFood(false);
+      setDishInfo(false);
       getFoodData();
-      getData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const HandleChange = async () => {
+    try {
+      const res = await fetch(`http://localhost:8000/food`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          foodname: changedetail.foodname,
+          ingredients: changedetail.ingredients,
+        }),
+      });
+      setDishInfo(false);
+      getFoodData();
     } catch (err) {
       console.log(err);
     }
@@ -91,7 +112,13 @@ export const FoodInfo = ({
 
                 <input
                   className="w-72 h-9 border border-[#E4E4E7] px-1 rounded-2xl"
-                  defaultValue={foodname}
+                  value={changedetail.foodname}
+                  onChange={(e) =>
+                    setChangedetail({
+                      ...changedetail,
+                      foodname: e.target.value,
+                    })
+                  }
                 ></input>
               </div>
               <div className="w-120 h-15 flex justify-between">
@@ -100,17 +127,18 @@ export const FoodInfo = ({
                 </div>
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a fruit" />
+                    <SelectValue placeholder={categoryName} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Fruits</SelectLabel>
-                      <SelectItem value="apple">Apple</SelectItem>
-                      <SelectItem value="banana">Banana</SelectItem>
-                      <SelectItem value="blueberry">Blueberry</SelectItem>
-                      <SelectItem value="grapes">Grapes</SelectItem>
-                      <SelectItem value="pineapple">Pineapple</SelectItem>
-                    </SelectGroup>
+                    {foodCategoryData.map((data) => {
+                      return (
+                        <SelectGroup key={data._id}>
+                          <SelectItem value={data._id}>
+                            {data.categoryName}
+                          </SelectItem>
+                        </SelectGroup>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </div>
@@ -121,7 +149,13 @@ export const FoodInfo = ({
 
                 <textarea
                   className="w-72 h-30 border border-[#E4E4E7] px-1 rounded-2xl py-1"
-                  defaultValue={ingredients}
+                  value={changedetail.ingredients}
+                  onChange={(e) =>
+                    setChangedetail({
+                      ...changedetail,
+                      ingredients: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="w-120 h-15 flex justify-between">
@@ -146,10 +180,16 @@ export const FoodInfo = ({
               </div>
             </div>
             <div className="w-120 h-30 flex items-end justify-between ">
-              <button className="w-12 h-10 bg-white border border-[#EF444480] flex items-center justify-center rounded-xl cursor-pointer">
+              <button
+                onClick={handleSubmit}
+                className="w-12 h-10 bg-white border border-[#EF444480] flex items-center justify-center rounded-xl cursor-pointer"
+              >
                 <DeleteIcon />
               </button>
-              <button className="bg-black w-30 h-10 rounded-xl cursor-pointer">
+              <button
+                onClick={HandleChange}
+                className="bg-black w-30 h-10 rounded-xl cursor-pointer"
+              >
                 <p className="text-white">Save Changes</p>
               </button>
             </div>

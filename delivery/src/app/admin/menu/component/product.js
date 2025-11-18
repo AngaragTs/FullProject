@@ -35,7 +35,7 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
     const data = await fetch(`http://localhost:8000/food/${id}`, options);
     const jsonData = await data.json();
     setfood(jsonData);
-    console.log("categoryfoodssss", jsonData);
+    console.log("hahahaa", jsonData);
   };
 
   useEffect(() => {
@@ -147,6 +147,9 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
                 foodname={food.foodname}
                 price={food.price}
                 image={food.image || "../head.png"}
+                categoryName={categoryName}
+                id={food._id}
+                getFoodData={getFoodData}
               />
             );
           })}
