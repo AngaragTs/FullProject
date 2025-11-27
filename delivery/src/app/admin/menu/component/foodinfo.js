@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { PenIcon } from "../../icons/penicon";
 import { DeleteIcon } from "../../icons/deleteicon";
@@ -10,6 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { FileX, LucideImage } from "lucide-react";
+import Image from "next/image";
+import { FiX } from "react-icons/fi";
 
 export const FoodInfo = ({
   ingredients,
@@ -19,12 +24,16 @@ export const FoodInfo = ({
   foodCategoryData,
   categoryName,
   id,
+  logoUrl,
+  uploading,
   getFoodData,
+  food,
 }) => {
   const [dishinfo, setDishInfo] = useState(false);
   const [changedetail, setChangedetail] = useState({
     foodname: foodname,
     ingredients: ingredients,
+    price: price,
   });
   const handleSubmit = async () => {
     try {
@@ -57,14 +66,18 @@ export const FoodInfo = ({
           id: id,
           foodname: changedetail.foodname,
           ingredients: changedetail.ingredients,
+          price: changedetail.price,
         }),
       });
+      console.log("tneg angarag ");
+
       setDishInfo(false);
       getFoodData();
     } catch (err) {
       console.log(err);
     }
   };
+  console.log(logoUrl, "dsagfag");
 
   return (
     <div className="w-70 h-60 border rounded-2xl flex flex-col items-center justify-around border-[#E4E4E7]">
@@ -165,18 +178,67 @@ export const FoodInfo = ({
 
                 <input
                   className="w-72 h-9 border border-[#E4E4E7] px-1 rounded-2xl"
-                  defaultValue={price}
+                  value={changedetail.price}
+                  onChange={(e) =>
+                    setChangedetail({
+                      ...changedetail,
+                      price: e.target.value,
+                    })
+                  }
                 ></input>
               </div>
               <div className="w-120 h-50 flex justify-between">
                 <div className="w-30">
                   <p className="text-xs text-[#71717A]">Image</p>
                 </div>
+                <label
+                  htmlFor="food-image"
+                  className={`w-72 h-40 border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition bg-[#2563EB0D]`}
+                >
+                  {!logoUrl ? (
+                    <div className="flex flex-col items-center gap-2">
+                      {/* {!uploading && (
+                        <Label htmlFor="input-tag">
+                          <img
+                            className="w-72 h-30 border border-[#E4E4E7] px-1 rounded-2xl py-1"
+                            src={image}
+                          />
+                        </Label>
+                      )} */}
+                      <div className="rounded-full bg-white p-2">
+                        <LucideImage />
+                      </div>
+                      <p className="text-sm font-medium">
+                        Choose whatever shit you got
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="w-72 relative h-40">
+                      <Image
+                        src={food.image}
+                        alt="Uploaded logo"
+                        fill
+                        className="object-contain rounded border border-gray-300 "
+                      />
+                      <button className=" absolute top-2 right-2 text-gray-800/50 bg-white/80">
+                        <FiX />
+                      </button>
+                    </div>
+                  )}
 
-                <img
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="food-image"
+                    // onChange={handleLogoUpload}
+                    disabled={uploading}
+                    className="hidden"
+                  />
+                </label>
+                {/* <img
                   className="w-72 h-30 border border-[#E4E4E7] px-1 rounded-2xl py-1"
                   src={image}
-                />
+                /> */}
               </div>
             </div>
             <div className="w-120 h-30 flex items-end justify-between ">

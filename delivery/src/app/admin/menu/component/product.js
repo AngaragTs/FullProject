@@ -149,6 +149,9 @@ export const Head = ({ categoryName, id, foodCategoryData }) => {
                 image={food.image || "../head.png"}
                 categoryName={categoryName}
                 id={food._id}
+                food={food}
+                logoUrl={food.image}
+                uploading={uploading}
                 getFoodData={getFoodData}
               />
             );

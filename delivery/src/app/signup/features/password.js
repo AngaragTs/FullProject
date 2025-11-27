@@ -1,5 +1,6 @@
 "use client";
 
+import { SideArrowIcon } from "@/app/admin/icons/sidearrowicon";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +9,7 @@ export const CreatePassword = () => {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
@@ -39,7 +41,11 @@ export const CreatePassword = () => {
   return (
     <div className="w-full h-280 flex  justify-center items-center gap-10">
       <div className="w-100 h-94">
-        <div className="w-full h-20">
+        <div className="w-full h-30">
+          <div className="w-9 h-9 flex items-center justify-center rounded-xl border border-[#E4E4E7] cursor-pointer">
+            <SideArrowIcon />
+          </div>
+
           <p className="font-semibold text-2xl">Create a strong password</p>
           <p className="text-[#71717A]">
             Create a strong password with letters, numbers.
@@ -48,20 +54,26 @@ export const CreatePassword = () => {
         <div className="w-full h-30 ">
           <input
             placeholder="Password"
-            type="Password"
+            type={showPassword ? "text" : "Password"}
             className="border border-[#E4E4E7] w-full h-9 pl-2 "
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
           <input
-            placeholder="Confirm"
-            type="Password"
+            placeholder="Confirm Password"
+            type={showPassword ? "text" : "Password"}
+            id="Password"
             className="border border-[#E4E4E7] w-full h-9 pl-2 mt-2"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>
           <div className="flex gap-2">
-            <input type="checkbox"></input>
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            ></input>
+
             <p className="text-[#71717A]">Show password</p>
           </div>
         </div>

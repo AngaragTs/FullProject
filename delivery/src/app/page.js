@@ -40,24 +40,46 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Textarea } from "@/components/ui/textarea";
 import { ExitIcon } from "./admin/icons/xicon";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+
+import { useEffect } from "react";
 import { use, useState } from "react";
 import { FoodIcon } from "./admin/icons/foodicon";
 import { TimeIcon } from "./admin/icons/timeicon";
 import { MapIcon } from "./admin/icons/mapicon";
+import { FoodInfo } from "./admin/menu/component/foodinfo";
 
 export default function Home() {
   const [step, setstep] = useState(1);
   const [text, setText] = useState("");
   const [addloc, setAddLoc] = useState(false);
+  const [foodCategoryData, setFoodCategoryData] = useState([]);
+  const [food, setfood] = useState([]);
+
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzZiMzEwNzJlZDg5ODcwMzQxM2Y0NzkyYzZjZTdjYyIsIm5iZiI6MTczODAyNjY5NS44NCwic3ViIjoiNjc5ODJlYzc3MDJmNDkyZjQ3OGY2OGUwIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.k4OF9yGrhA2gZ4VKCH7KLnNBB2LIf1Quo9c3lGF6toE",
+    },
+  };
+
+  const getFoodData = async () => {
+    const data = await fetch(`http://localhost:8000/food/${id}`, options);
+    const jsonData = await data.json();
+    setfood(jsonData);
+    console.log("darararara");
+  };
+
+  const getData = async () => {
+    const data = await fetch(`http://localhost:8000/category`, options);
+    const jsonData = await data.json();
+    setFoodCategoryData(jsonData);
+    console.log("category", jsonData);
+  };
+  useEffect(() => {
+    getData(), getFoodData();
+  }, []);
 
   const HandleNextStep = () => {
     setstep(step + 1);
@@ -326,7 +348,58 @@ export default function Home() {
         </div>
       </div>
       <img className="w-full" src="./head.png" />
-      <div className="bg-[#404040] h-100"></div>
+      <div className="bg-[#404040] h-100 flex justify-center">
+        <div className="w-[90%] h-45">
+          <p className="text-white font-semibold text-3xl">Categories</p>
+
+          <div className="ml-2 gap-2 flex flex-wrap ">
+            {foodCategoryData.map((category, index) => {
+              return (
+                <button
+                  className="cursor-pointer  bg-white rounded-xl w-auto p-2 border flex gap-2"
+                  key={index}
+                >
+                  {category.categoryName}
+                  <div className="bg-white rounded-2xl h-6 w-6">
+                    <p className="text-black">{category.food}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      {foodCategoryData.map((category, index) => {
+        return (
+          <button
+            className="cursor-pointer  bg-white rounded-xl w-auto p-2 border flex gap-2"
+            key={index}
+          >
+            {food.map((food) => {
+              return (
+                <FoodInfo
+                  key={food._id}
+                  foodCategoryData={foodCategoryData}
+                  ingredients={food.ingredients}
+                  foodname={food.foodname}
+                  price={food.price}
+                  image={food.image || "../head.png"}
+                  categoryName={categoryName}
+                  id={food._id}
+                  food={food}
+                  logoUrl={food.image}
+                  uploading={uploading}
+                  getFoodData={getFoodData}
+                />
+              );
+            })}
+            {category.categoryName}
+            <div className="bg-white rounded-2xl h-6 w-6">
+              <p className="text-black">{category.food}</p>
+            </div>
+          </button>
+        );
+      })}
       <div className="w-full h-200 bg-black  py-10">
         <div className="w-full h-20 bg-[#EF4444] justify-center items-center flex overflow-hidden">
           <div className="w-full  text-white text-3xl animation-scroll whitespace-nowrap gap-2 font-semibold">
@@ -431,83 +504,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* <div className="w-full flex justify-center mt-10 ">
-          <div className=" flex gap-20 items-center">
-            <div>
-              <Logo />
-              <div>
-                <p className="text-2xl text-[#FAFAFA]">
-                  Nom<span className="text-[#EF4444] text-2xl">Nom</span>
-                </p>
-                <p className="text-[#E4E4E7] text-base">Swift delivery</p>
-              </div>
-            </div>
-            <div className="w-30 flex flex-col items-start">
-              <p className="text-base text-[#71717A]">NOMNOM </p>
-              <button className="text-white text-start cursor-pointer">
-                Home{" "}
-              </button>
-              <button className="text-white text-start cursor-pointer">
-                Contact us{" "}
-              </button>
-              <button className="text-white text-start cursor-pointer">
-                Delivery zone{" "}
-              </button>
-            </div>
-            <div className="h-full w-80 ">
-              <div>
-                <p className="text-base text-[#71717A]">MENU</p>
-              </div>
-              <div className=" flex">
-                <div className="h-20 w-40 flex flex-col items-start ">
-                  <button className="text-white cursor-pointer">
-                    Appetizers
-                  </button>
-                  <button className="text-white cursor-pointer">Salads</button>
-                  <button className="text-white cursor-pointer">Pizzas</button>
-                  <button className="text-white cursor-pointer">
-                    Main dishes
-                  </button>
-                  <button className="text-white cursor-pointer">
-                    Desserts
-                  </button>
-                </div>
-                <div className="h-20 w-20 flex flex-col items-start">
-                  <button className="text-white cursor-pointer">
-                    Side dish{" "}
-                  </button>
-                  <button className="text-white cursor-pointer">Brunch</button>
-                  <button className="text-white cursor-pointer">
-                    Desserts
-                  </button>
-                  <button className="text-white cursor-pointer">
-                    Beverages
-                  </button>
-                  <button className="text-white cursor-pointer">
-                    Fish & Sea foods
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div>
-              <p className="text-[#71717A] text-base">Follow us</p>
-              <div className="flex">
-                <img className="w-7 h-7" src="./facebook.png"></img>
-                <img className="w-7 h-7" src="./instagram.png"></img>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="w-full flex justify-center">
-          <div className="w-220  border-t-2 border-[#71717A]  flex gap-10 text-[#71717A] mt-30">
-            <p>Copy right 2024</p>
-            <p>Nomnom LLC</p>
-            <p>Privacy policy </p>
-            <p>Terms and conditoin</p>
-            <p>Cookie policy</p>
-          </div>
-        </div> */}
       </div>
     </div>
   );
